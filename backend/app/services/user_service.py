@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 
 from app.models.users import User
 from app.schemas.users import UserCreate
+
 from app.utils.password import hash_password
 
 
@@ -31,5 +32,16 @@ def get_user_by_email(
     return (
         db.query(User)
         .filter(User.email == email)
+        .first()
+    )
+
+
+def get_user_by_id(
+    db: Session,
+    user_id: int
+):
+    return (
+        db.query(User)
+        .filter(User.id == user_id)
         .first()
     )

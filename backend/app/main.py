@@ -3,6 +3,10 @@ from fastapi import FastAPI
 from app.api.auth import router as auth_router
 from app.db.base import Base
 from app.db.database import engine
+from app.models.users import User
+from app.models.chats import Chat
+from app.models.chat_members import ChatMember
+from app.models.messages import Message
 
 Base.metadata.create_all(bind=engine)
 
