@@ -7,6 +7,8 @@ from app.models.users import User
 from app.models.chats import Chat
 from app.models.chat_members import ChatMember
 from app.models.messages import Message
+from app.api.chats import router as chats_router
+
 
 Base.metadata.create_all(bind=engine)
 
@@ -16,4 +18,8 @@ app = FastAPI(
 
 app.include_router(
     auth_router
+)
+
+app.include_router(
+    chats_router
 )
