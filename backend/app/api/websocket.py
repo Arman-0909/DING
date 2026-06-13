@@ -31,7 +31,10 @@ async def websocket_endpoint(
         "token"
     )
 
+    print("TOKEN:", token)
+
     if not token:
+        print("NO TOKEN")
         await websocket.close(
             code=1008
         )
@@ -41,7 +44,10 @@ async def websocket_endpoint(
         token
     )
 
+    print("PAYLOAD:", payload)
+
     if not payload:
+        print("TOKEN INVALID")
         await websocket.close(
             code=1008
         )
@@ -51,18 +57,27 @@ async def websocket_endpoint(
         payload.get("sub")
     )
 
+    print("SENDER:", sender_id)
+
     db = get_db_session()
 
-    if not is_chat_member(
+    member = is_chat_member(
         db,
         chat_id,
         sender_id
-    ):
+    )
+
+    print("MEMBER:", member)
+
+    if not member:
+        print("NOT MEMBER")
         await websocket.close(
             code=1008
         )
         db.close()
         return
+
+    print("CONNECTED")
 
     await manager.connect(
         chat_id,
