@@ -1,8 +1,22 @@
 import asyncio
 import websockets
 
+TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwiZXhwIjoxNzgxMzYyMzIwfQ.r9Te0TuL-_EIk2p9IDb0RgaLml2NvM7Pum1iDFYGyuM"
 
-TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwiZXhwIjoxNzgxMzYwMDY4fQ.lnHhaC_mz5mxAPGxm2U4RENNuUlM52YakZhd8cTMXeo"
+
+async def receive_messages(ws):
+    while True:
+        try:
+            message = await ws.recv()
+            print(f"\nReceived: {message}")
+        except:
+            break
+
+
+async def send_messages(ws):
+    while True:
+        text = input("You: ")
+        await ws.send(text)
 
 
 async def main():
@@ -12,28 +26,14 @@ async def main():
         f"?token={TOKEN}"
     )
 
-    async with websockets.connect(
-        uri
-    ) as ws:
+    async with websockets.connect(uri) as ws:
 
         print("Connected ✅")
 
-        while True:
-
-            message = input(
-                "You: "
-            )
-
-            await ws.send(
-                message
-            )
-
-            response = await ws.recv()
-
-            print(
-                "Received:",
-                response
-            )
+        await asyncio.gather(
+            receive_messages(ws),
+            send_messages(ws)
+        )
 
 
 asyncio.run(main())
