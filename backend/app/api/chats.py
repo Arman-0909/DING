@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from fastapi import Depends
+from fastapi import HTTPException
 
 from sqlalchemy.orm import Session
 
@@ -14,9 +15,16 @@ from app.schemas.chats import (
     ChatResponse
 )
 
+from app.schemas.chat_members import (
+    AddMember
+)
+
 from app.services.chat_service import (
     create_chat,
-    get_user_chats
+    get_user_chats,
+    add_member,
+    get_chat_members,
+    is_chat_member
 )
 
 router = APIRouter(
@@ -57,4 +65,64 @@ def get_chats(
     return get_user_chats(
         db,
         current_user.id
+    )
+
+
+@router.post(
+    "/{chat_id}/members"
+)
+def add_chat_member(
+    chat_id: int,
+    member: AddMember,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(
+        get_current_user
+    )
+):
+
+    if not is_chat_member(
+        db,
+        chat_id,
+        current_user.id
+    ):
+        raise HTTPException(
+            status_code=403,
+            detail="Not a chat member"
+        )
+
+    add_member(
+        db,
+        chat_id,
+        member.user_id
+    )
+
+    return {
+        "message": "Member added"
+    }
+
+
+@router.get(
+    "/{chat_id}/members"
+)
+def get_members(
+    chat_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(
+        get_current_user
+    )
+):
+
+    if not is_chat_member(
+        db,
+        chat_id,
+        current_user.id
+    ):
+        raise HTTPException(
+            status_code=403,
+            detail="Not a chat member"
+        )
+
+    return get_chat_members(
+        db,
+        chat_id
     )

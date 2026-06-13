@@ -2,6 +2,8 @@ from sqlalchemy import Column
 from sqlalchemy import Integer
 from sqlalchemy import String
 from sqlalchemy import ForeignKey
+from sqlalchemy import DateTime
+from datetime import datetime
 
 from app.db.base import Base
 
@@ -27,4 +29,9 @@ class Message(Base):
 
     content = Column(
         String
+    )
+
+    created_at = Column(
+        DateTime,
+        default=datetime.utcnow
     )
