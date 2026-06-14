@@ -19,9 +19,7 @@ from app.services.chat_service import (
 router = APIRouter()
 
 
-@router.websocket(
-    "/ws/chat/{chat_id}"
-)
+@router.websocket("/ws/chat/{chat_id}")
 async def websocket_endpoint(
     websocket: WebSocket,
     chat_id: int
@@ -31,10 +29,7 @@ async def websocket_endpoint(
         "token"
     )
 
-    print("TOKEN:", token)
-
     if not token:
-        print("NO TOKEN")
         await websocket.close(
             code=1008
         )
@@ -44,10 +39,7 @@ async def websocket_endpoint(
         token
     )
 
-    print("PAYLOAD:", payload)
-
     if not payload:
-        print("TOKEN INVALID")
         await websocket.close(
             code=1008
         )
@@ -57,27 +49,18 @@ async def websocket_endpoint(
         payload.get("sub")
     )
 
-    print("SENDER:", sender_id)
-
     db = get_db_session()
 
-    member = is_chat_member(
+    if not is_chat_member(
         db,
         chat_id,
         sender_id
-    )
-
-    print("MEMBER:", member)
-
-    if not member:
-        print("NOT MEMBER")
+    ):
         await websocket.close(
             code=1008
         )
         db.close()
         return
-
-    print("CONNECTED")
 
     await manager.connect(
         chat_id,
@@ -89,6 +72,9 @@ async def websocket_endpoint(
         while True:
 
             text = await websocket.receive_text()
+
+            if not text.strip():
+                continue
 
             message = create_message(
                 db=db,
