@@ -1,9 +1,48 @@
 # Python
 __pycache__/
 *.py[cod]
+*.pyo
+
+# Virtual Environment
+venv/
+.env/
+
+# Environment Variables
 .env
-# Node
-node_modules/
-dist/
-# VSCode
+.env.*
+
+# VS Code
 .vscode/
+
+# Database
+*.db
+*.sqlite3
+
+# Logs
+*.log
+
+# Pytest
+.pytest_cache/
+
+# Coverage
+.coverage
+htmlcov/
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Build
+build/
+dist/
+*.egg-info/
+
+# Migrations cache
+alembic/versions/__pycache__/
+
+# JetBrains
+.idea/
+
+# Temporary files
+*.tmp
+*.temp
