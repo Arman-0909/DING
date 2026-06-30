@@ -205,4 +205,4 @@ This project is licensed under the MIT License.
 
 ---
 
-Built by **Arman**.
+Built by **Arman**

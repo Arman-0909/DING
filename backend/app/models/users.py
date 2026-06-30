@@ -26,7 +26,19 @@ class User(Base):
     )
 
     password_hash = Column(
-        String
+    String,
+    nullable=True
+    )
+
+    google_id = Column(
+    String,
+    unique=True,
+    nullable=True
+    )
+
+    auth_provider = Column(
+    String,
+    default="local"
     )
 
     is_online = Column(
