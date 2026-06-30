@@ -5,3 +5,6 @@ pydantic
 alembic
 python-multipart
 python-dotenv
+authlib
+httpx
+itsdangerous
