@@ -1,9 +1,9 @@
 # DING
 
 <p align="center">
-  <h3 align="center">Real-Time Chat Backend</h3>
+  <h1 align="center">DING</h1>
   <p align="center">
-    Built with FastAPI, PostgreSQL, JWT Authentication and WebSockets.
+    A modern real-time chat backend built with FastAPI, PostgreSQL, JWT Authentication, Google OAuth and WebSockets.
   </p>
 </p>
 
@@ -12,16 +12,17 @@
   <img src="https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white">
   <img src="https://img.shields.io/badge/SQLAlchemy-D71F00?style=for-the-badge">
   <img src="https://img.shields.io/badge/JWT-Authentication-black?style=for-the-badge">
-  <img src="https://img.shields.io/badge/WebSockets-RealTime-orange?style=for-the-badge">
+  <img src="https://img.shields.io/badge/Google-OAuth-red?style=for-the-badge&logo=google">
+  <img src="https://img.shields.io/badge/WebSockets-Real--Time-orange?style=for-the-badge">
 </p>
 
 ---
 
 ## About
 
-DING is a backend-focused real-time chat application designed to explore how modern messaging systems work under the hood.
+DING is a backend-focused real-time chat application built to explore production-style backend architecture. It features secure authentication, Google OAuth, chat management, persistent messaging, and real-time communication using native WebSockets.
 
-The project implements authentication, authorization, persistent message storage, chat membership validation, and real-time communication using WebSockets.
+The project follows a clean service-based architecture with SQLAlchemy models, JWT authentication, and PostgreSQL as the primary database.
 
 ---
 
@@ -29,53 +30,51 @@ The project implements authentication, authorization, persistent message storage
 
 ### Authentication
 
-- User Registration
-- User Login
-- Password Hashing (bcrypt)
-- JWT Access Tokens
-- Protected Endpoints
+- User Registration & Login
+- Google OAuth Sign-In
+- JWT Authentication
+- bcrypt Password Hashing
+- Protected API Routes
+- Account Linking
+- Current User Endpoint
 
-### Chats
+### Chat System
 
-- Create Chats
-- Add Members
+- Create Private Chats
+- Add Chat Members
 - Retrieve User Chats
 - Membership Validation
+- Secure Chat Access
 
 ### Messaging
 
-- Send Messages
-- Retrieve Message History
+- Real-Time Messaging
+- WebSocket Broadcasting
+- Chat History
 - Persistent Storage
 - Timestamped Messages
 
-### Real-Time Communication
-
-- WebSocket Connections
-- JWT-Protected WebSockets
-- Real-Time Message Broadcasting
-- Multi-User Chat Rooms
-
 ### Security
 
-- Password Hashing
-- JWT Verification
-- Chat Membership Checks
-- Unauthorized Connection Blocking
+- JWT-Protected WebSockets
+- Password Encryption
+- Google OAuth Integration
+- Chat Authorization
+- Duplicate Account Protection
 
 ---
 
 ## Tech Stack
 
-| Technology | Purpose |
-|------------|----------|
-| FastAPI | API Framework |
-| PostgreSQL | Database |
-| SQLAlchemy | ORM |
-| JWT | Authentication |
-| bcrypt | Password Hashing |
-| WebSockets | Real-Time Communication |
-| Python | Backend Language |
+| Layer | Technology |
+|--------|------------|
+| Backend | FastAPI |
+| Database | PostgreSQL |
+| ORM | SQLAlchemy |
+| Authentication | JWT + Google OAuth |
+| Password Security | bcrypt |
+| Real-Time | Native WebSockets |
+| Language | Python |
 
 ---
 
@@ -96,57 +95,39 @@ app/
 
 ---
 
-## Database Design
-
-### Users
-
-Stores account information.
-
-### Chats
-
-Stores chat metadata.
-
-### Chat Members
-
-Links users to chats.
-
-### Messages
-
-Stores all chat messages and timestamps.
-
----
-
-## WebSocket Authentication Flow
+## Authentication Flow
 
 ```text
-Client
-   │
-   ▼
-JWT Token
-   │
-   ▼
-Token Validation
-   │
-   ▼
-Membership Check
-   │
-   ▼
-Connection Accepted
-   │
-   ▼
-Real-Time Messaging
+Register / Google Login
+          │
+          ▼
+     User Verified
+          │
+          ▼
+     JWT Generated
+          │
+          ▼
+ Protected API Access
+          │
+          ▼
+ WebSocket Authentication
+          │
+          ▼
+ Real-Time Chat
 ```
 
 ---
 
-## API Capabilities
+## API
 
-### Auth
+### Authentication
 
 ```http
 POST /auth/register
 POST /auth/login
 GET  /auth/me
+GET  /auth/google/login
+GET  /auth/google/callback
 ```
 
 ### Chats
@@ -175,25 +156,27 @@ ws://localhost:8000/ws/chat/{chat_id}?token=JWT_TOKEN
 
 ## What I Learned
 
-- FastAPI Application Architecture
-- SQLAlchemy Relationships
-- JWT Authentication
-- Authorization Patterns
-- WebSocket Communication
+- FastAPI Application Design
+- SQLAlchemy ORM
 - PostgreSQL Integration
-- Service Layer Design
-- Real-Time System Development
+- JWT Authentication
+- Google OAuth
+- WebSocket Communication
+- Service Layer Architecture
+- Authorization & Access Control
+- Building Real-Time Systems
 
 ---
 
 ## Future Improvements
 
+- React Frontend
 - Read Receipts
 - Typing Indicators
 - Online Presence
-- File Sharing
+- File & Image Sharing
 - Message Editing
-- Docker Deployment
+- Docker Support
 - Automated Testing
 - Redis Pub/Sub Scaling
 
@@ -201,8 +184,10 @@ ws://localhost:8000/ws/chat/{chat_id}?token=JWT_TOKEN
 
 ## License
 
-This project is licensed under the MIT License.
+Licensed under the **MIT License**.
 
 ---
 
-Built by **Arman**
+<p align="center">
+Built with ❤️ by <b>Arman</b>
+</p>
