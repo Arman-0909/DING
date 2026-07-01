@@ -3,7 +3,7 @@
 <p align="center">
   <h1 align="center">DING</h1>
   <p align="center">
-    A modern real-time chat backend built with FastAPI, PostgreSQL, JWT Authentication, Google OAuth and WebSockets.
+    A modern real-time chat backend built with FastAPI, PostgreSQL, JWT Authentication, Google OAuth, and WebSockets.
   </p>
 </p>
 
@@ -11,178 +11,172 @@
   <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white">
   <img src="https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white">
   <img src="https://img.shields.io/badge/SQLAlchemy-D71F00?style=for-the-badge">
-  <img src="https://img.shields.io/badge/JWT-Authentication-black?style=for-the-badge">
-  <img src="https://img.shields.io/badge/Google-OAuth-red?style=for-the-badge&logo=google">
-  <img src="https://img.shields.io/badge/WebSockets-Real--Time-orange?style=for-the-badge">
+  <img src="https://img.shields.io/badge/JWT-black?style=for-the-badge">
+  <img src="https://img.shields.io/badge/Google_OAuth-red?style=for-the-badge&logo=google">
+  <img src="https://img.shields.io/badge/WebSockets-orange?style=for-the-badge">
 </p>
 
 ---
 
-## About
+## 📖 Table of Contents
 
-DING is a backend-focused real-time chat application built to explore production-style backend architecture. It features secure authentication, Google OAuth, chat management, persistent messaging, and real-time communication using native WebSockets.
-
-The project follows a clean service-based architecture with SQLAlchemy models, JWT authentication, and PostgreSQL as the primary database.
-
----
-
-## Features
-
-### Authentication
-
-- User Registration & Login
-- Google OAuth Sign-In
-- JWT Authentication
-- bcrypt Password Hashing
-- Protected API Routes
-- Account Linking
-- Current User Endpoint
-
-### Chat System
-
-- Create Private Chats
-- Add Chat Members
-- Retrieve User Chats
-- Membership Validation
-- Secure Chat Access
-
-### Messaging
-
-- Real-Time Messaging
-- WebSocket Broadcasting
-- Chat History
-- Persistent Storage
-- Timestamped Messages
-
-### Security
-
-- JWT-Protected WebSockets
-- Password Encryption
-- Google OAuth Integration
-- Chat Authorization
-- Duplicate Account Protection
+- [About](#about)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Getting Started](#getting-started)
+- [Project Structure](#project-structure)
+- [API Reference](#api-reference)
+- [Future Improvements](#future-improvements)
 
 ---
 
-## Tech Stack
+## 💡 About
 
-| Layer | Technology |
-|--------|------------|
-| Backend | FastAPI |
-| Database | PostgreSQL |
-| ORM | SQLAlchemy |
-| Authentication | JWT + Google OAuth |
-| Password Security | bcrypt |
-| Real-Time | Native WebSockets |
-| Language | Python |
+DING is a backend-focused real-time chat application built to demonstrate production-style backend architecture. It features secure authentication, Google OAuth integration, chat management, persistent messaging, pagination, and real-time communication using native WebSockets.
+
+The project follows a clean service-oriented architecture, decoupling the API routing layer from business logic and database models, ensuring high maintainability and scalability.
 
 ---
 
-## Project Structure
+## ✨ Features
+
+- **Robust Authentication**: 
+  - Local Registration & Login with bcrypt password hashing
+  - Google OAuth Sign-In (with seamless account linking)
+  - JWT Authentication for both REST API and WebSockets
+- **Chat Management**:
+  - Create Private and Group Chats
+  - Add/Remove Members with strict membership validation
+  - Retrieve User's Chats
+- **Real-Time Messaging**:
+  - Persistent chat history in PostgreSQL
+  - Message pagination (Limit/Offset)
+  - Real-Time WebSocket broadcasting to active connections
+  - Automatic stale connection cleanup
+- **Security Best Practices**:
+  - Input validation (e.g., message length, password strength)
+  - CORS middleware enabled
+  - Route authorization
+
+---
+
+## 🛠 Tech Stack
+
+| Layer | Technology | Description |
+|--------|------------|-------------|
+| **Framework** | FastAPI | High-performance async web framework |
+| **Database** | PostgreSQL | Relational database for persistent storage |
+| **ORM** | SQLAlchemy | Python SQL toolkit and Object Relational Mapper |
+| **Auth** | Authlib & python-jose | JWT and Google OAuth 2.0 integration |
+| **Security** | passlib (bcrypt) | Secure password hashing |
+| **Real-Time** | WebSockets | Full-duplex communication channels |
+| **Language** | Python 3.10+ | |
+
+---
+
+## 🚀 Getting Started
+
+Follow these instructions to get a copy of the project up and running on your local machine.
+
+### Prerequisites
+
+- Python 3.10+
+- PostgreSQL
+- Node.js (if running the frontend)
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/DING.git
+   cd DING/backend
+   ```
+
+2. **Create a virtual environment**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows use: venv\Scripts\activate
+   ```
+
+3. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Environment Variables**
+   Create a `.env` file in the `backend` directory (use `.env.example` as a template):
+   ```env
+   DATABASE_URL=postgresql://username:password@localhost/ding
+   SECRET_KEY=your_super_secret_key
+   ALGORITHM=HS256
+   ACCESS_TOKEN_EXPIRE_MINUTES=30
+   GOOGLE_CLIENT_ID=your_google_client_id
+   GOOGLE_CLIENT_SECRET=your_google_client_secret
+   ```
+
+5. **Run the application**
+   ```bash
+   uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+   ```
+
+The API will be running at `http://localhost:8000`. You can explore the interactive API documentation at `http://localhost:8000/docs`.
+
+---
+
+## 📂 Project Structure
 
 ```text
 app/
-├── api/
-├── core/
-├── db/
-├── models/
-├── schemas/
-├── services/
-├── utils/
-├── websocket/
-└── main.py
+├── api/          # FastAPI route handlers (Controllers)
+├── core/         # Core configuration, security, and OAuth setup
+├── db/           # Database connection and session management
+├── models/       # SQLAlchemy database models
+├── schemas/      # Pydantic schemas for request/response validation
+├── services/     # Business logic layer
+├── utils/        # Helper functions (hashing, tokens)
+├── websocket/    # WebSocket connection manager
+└── main.py       # FastAPI application entry point
 ```
 
 ---
 
-## Authentication Flow
-
-```text
-Register / Google Login
-          │
-          ▼
-     User Verified
-          │
-          ▼
-     JWT Generated
-          │
-          ▼
- Protected API Access
-          │
-          ▼
- WebSocket Authentication
-          │
-          ▼
- Real-Time Chat
-```
-
----
-
-## API
+## 📡 API Reference
 
 ### Authentication
-
-```http
-POST /auth/register
-POST /auth/login
-GET  /auth/me
-GET  /auth/google/login
-GET  /auth/google/callback
-```
+- `POST /auth/register` - Register a new user
+- `POST /auth/login` - Login with email/password
+- `GET  /auth/me` - Get current authenticated user
+- `GET  /auth/google/login` - Redirect to Google OAuth
+- `GET  /auth/google/callback` - Handle Google OAuth callback
 
 ### Chats
-
-```http
-POST /chats
-GET  /chats
-POST /chats/{chat_id}/members
-GET  /chats/{chat_id}/members
-```
+- `POST /chats` - Create a new chat
+- `GET  /chats` - Get all chats for current user
+- `POST /chats/{chat_id}/members` - Add a member to a chat
+- `GET  /chats/{chat_id}/members` - Get members of a chat
 
 ### Messages
+- `POST /messages` - Send a message to a chat
+- `GET  /messages/{chat_id}?limit=50&offset=0` - Get chat messages (paginated)
 
-```http
-POST /messages
-GET  /messages/{chat_id}
-```
-
-### WebSocket
-
-```text
-ws://localhost:8000/ws/chat/{chat_id}?token=JWT_TOKEN
-```
+### WebSockets
+- `ws://localhost:8000/ws/chat/{chat_id}?token=JWT_TOKEN` - Connect to a chat room
 
 ---
 
-## What I Learned
+## 🎯 Future Improvements
 
-- FastAPI Application Design
-- SQLAlchemy ORM
-- PostgreSQL Integration
-- JWT Authentication
-- Google OAuth
-- WebSocket Communication
-- Service Layer Architecture
-- Authorization & Access Control
-- Building Real-Time Systems
-
----
-
-## Future Improvements
-
-- React Frontend
-- Read Receipts
-- Typing Indicators
-- Online Presence
+- React/Next.js Frontend integration
+- Alembic Database Migrations
+- Read Receipts & Typing Indicators
+- Online Presence & Status
 - File & Image Sharing
-- Message Editing
-- Docker Support
-- Automated Testing
-- Redis Pub/Sub Scaling
+- Message Editing & Deletion
+- Redis Pub/Sub for multi-instance scaling
 
 ---
 
-## License
+## 📄 License
 
 Licensed under the **MIT License**.
 
