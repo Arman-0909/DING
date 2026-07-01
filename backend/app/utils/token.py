@@ -1,4 +1,5 @@
 from datetime import datetime
+from datetime import timezone
 from datetime import timedelta
 
 from jose import jwt
@@ -11,7 +12,7 @@ def create_access_token(data: dict):
 
     payload = data.copy()
 
-    expire = datetime.utcnow() + timedelta(
+    expire = datetime.now(timezone.utc) + timedelta(
         minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES
     )
 

@@ -24,11 +24,15 @@ def create_message(
 
 def get_chat_messages(
     db: Session,
-    chat_id: int
+    chat_id: int,
+    limit: int = 50,
+    offset: int = 0
 ):
     return (
         db.query(Message)
         .filter(Message.chat_id == chat_id)
+        .order_by(Message.created_at.asc())
+        .offset(offset)
+        .limit(limit)
         .all()
     )
-

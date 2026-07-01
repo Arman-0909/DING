@@ -90,6 +90,16 @@ def add_chat_member(
             detail="Not a chat member"
         )
 
+    if is_chat_member(
+        db,
+        chat_id,
+        member.user_id
+    ):
+        raise HTTPException(
+            status_code=409,
+            detail="Member already exists in the chat"
+        )
+
     add_member(
         db,
         chat_id,

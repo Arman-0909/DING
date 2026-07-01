@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from fastapi import Depends
 from fastapi import HTTPException
+from fastapi import Query
 
 from sqlalchemy.orm import Session
 
@@ -66,6 +67,15 @@ def send_message(
 )
 def get_messages(
     chat_id: int,
+    limit: int = Query(
+        default=50,
+        ge=1,
+        le=200
+    ),
+    offset: int = Query(
+        default=0,
+        ge=0
+    ),
     db: Session = Depends(get_db),
     current_user: User = Depends(
         get_current_user
@@ -84,5 +94,7 @@ def get_messages(
 
     return get_chat_messages(
         db,
-        chat_id
+        chat_id,
+        limit=limit,
+        offset=offset
     )

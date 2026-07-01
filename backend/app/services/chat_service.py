@@ -16,8 +16,7 @@ def create_chat(
     )
 
     db.add(chat)
-    db.commit()
-    db.refresh(chat)
+    db.flush()
 
     member = ChatMember(
         chat_id=chat.id,
@@ -26,7 +25,7 @@ def create_chat(
 
     db.add(member)
     db.commit()
-    db.refresh(member)
+    db.refresh(chat)
 
     return chat
 

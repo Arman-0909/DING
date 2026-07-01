@@ -1,4 +1,9 @@
+import logging
+
 from fastapi import WebSocket
+
+
+logger = logging.getLogger(__name__)
 
 
 class ConnectionManager:
@@ -20,8 +25,9 @@ class ConnectionManager:
             websocket
         )
 
-        print(
-            f"CONNECTED | Chat {chat_id} | Total:",
+        logger.info(
+            "CONNECTED | Chat %s | Total: %s",
+            chat_id,
             len(self.active_connections[chat_id])
         )
 
@@ -37,8 +43,9 @@ class ConnectionManager:
                     websocket
                 )
 
-            print(
-                f"DISCONNECTED | Chat {chat_id} | Remaining:",
+            logger.info(
+                "DISCONNECTED | Chat %s | Remaining: %s",
+                chat_id,
                 len(self.active_connections[chat_id])
             )
 
@@ -47,29 +54,27 @@ class ConnectionManager:
         chat_id: int,
         message: dict
     ):
-        print(
-            "\nBROADCASTING:",
-            message
-        )
-
         if chat_id not in self.active_connections:
-            print("NO ACTIVE CONNECTIONS")
             return
 
-        print(
-            "CONNECTIONS:",
-            len(
-                self.active_connections[chat_id]
-            )
-        )
+        stale = []
 
         for connection in self.active_connections[chat_id]:
-            await connection.send_json(
-                message
+            try:
+                await connection.send_json(
+                    message
+                )
+            except Exception:
+                logger.warning(
+                    "Stale connection in chat %s, removing",
+                    chat_id
+                )
+                stale.append(connection)
+
+        for connection in stale:
+            self.active_connections[chat_id].remove(
+                connection
             )
-
-        print("BROADCAST COMPLETE")
-
 
 
 manager = ConnectionManager()

@@ -4,7 +4,7 @@ from fastapi import WebSocketDisconnect
 
 from app.websocket.manager import manager
 
-from app.db.session import get_db_session
+from app.db.database import get_db
 
 from app.utils.token import verify_token
 
@@ -17,6 +17,8 @@ from app.services.chat_service import (
 )
 
 router = APIRouter()
+
+MAX_MESSAGE_LENGTH = 5000
 
 
 @router.websocket("/ws/chat/{chat_id}")
@@ -49,31 +51,36 @@ async def websocket_endpoint(
         payload.get("sub")
     )
 
-    db = get_db_session()
-
-    if not is_chat_member(
-        db,
-        chat_id,
-        sender_id
-    ):
-        await websocket.close(
-            code=1008
-        )
-        db.close()
-        return
-
-    await manager.connect(
-        chat_id,
-        websocket
-    )
+    db = next(get_db())
 
     try:
+
+        if not is_chat_member(
+            db,
+            chat_id,
+            sender_id
+        ):
+            await websocket.close(
+                code=1008
+            )
+            return
+
+        await manager.connect(
+            chat_id,
+            websocket
+        )
 
         while True:
 
             text = await websocket.receive_text()
 
             if not text.strip():
+                continue
+
+            if len(text) > MAX_MESSAGE_LENGTH:
+                await websocket.send_json({
+                    "error": "Message too long (max 5000 chars)"
+                })
                 continue
 
             message = create_message(

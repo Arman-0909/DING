@@ -2,6 +2,10 @@ from sqlalchemy import Column
 from sqlalchemy import Integer
 from sqlalchemy import String
 from sqlalchemy import Boolean
+from sqlalchemy import DateTime
+
+from datetime import datetime
+from datetime import timezone
 
 from app.db.base import Base
 
@@ -26,22 +30,27 @@ class User(Base):
     )
 
     password_hash = Column(
-    String,
-    nullable=True
+        String,
+        nullable=True
     )
 
     google_id = Column(
-    String,
-    unique=True,
-    nullable=True
+        String,
+        unique=True,
+        nullable=True
     )
 
     auth_provider = Column(
-    String,
-    default="local"
+        String,
+        default="local"
     )
 
     is_online = Column(
         Boolean,
         default=False
+    )
+
+    created_at = Column(
+        DateTime,
+        default=lambda: datetime.now(timezone.utc)
     )

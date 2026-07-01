@@ -3,16 +3,12 @@ from sqlalchemy import Integer
 from sqlalchemy import String
 from sqlalchemy import ForeignKey
 from sqlalchemy import DateTime
+
 from datetime import datetime
+from datetime import timezone
+
 from app.db.base import Base
-from sqlalchemy import DateTime
-from datetime import datetime
 
-
-created_at = Column(
-    DateTime,
-    default=datetime.utcnow
-)
 
 class Message(Base):
     __tablename__ = "messages"
@@ -39,5 +35,5 @@ class Message(Base):
 
     created_at = Column(
         DateTime,
-        default=datetime.utcnow
+        default=lambda: datetime.now(timezone.utc)
     )
